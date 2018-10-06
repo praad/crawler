@@ -1,11 +1,12 @@
 # TodoApp 1.0 (stable)
 
-This project is a simple Symphoni 4.1 components based todo list app.
-It uses katzgrau/klogger package for logging.
+This project is a simple web crawler.
 
 ```
 Install:
   ./install.sh
+
+Simple Web Crawler 1.0 (stable)
 
 Usage:
   command [options] [arguments]
@@ -20,12 +21,10 @@ Options:
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Available commands:
-  help         Displays help for a command
-  list         Lists commands
- todo
-  todo:create  Create a new todo with status and description
-  todo:list    List all todos
-  todo:update  Update status of the selected todo.
+  help           Displays help for a command
+  list           Lists commands
+ crawler
+  crawler:start  Start crawling a website given by url: parameter
 ```
 
 ## Authors
