@@ -1,0 +1,86 @@
+#! /bin/bash
+
+# Print header
+function header {
+    echo "Pre-push hook for Todo List"
+}
+
+# Check for php syntax errors
+function lint {
+    echo -e 'Checking for syntax errors...\c'
+    for file in `find src test -type f -iname "*.php" -o -iname "*.phtml"`
+    do
+        php -l $file > /dev/null 2>&1
+        if [ $? != 0 ]
+        then
+            failed
+        fi
+    done
+    pass
+}
+
+# Check git status
+function git_checker {
+    echo -e 'Checking working directory...\c'
+    if [ -n "$(git status --porcelain)" ]; then
+      echo -e "\x1B[31mPlease commit/stash your changes first!\x1B[0m\n"
+      mplayer support/git/sad-trompone.mp3 > /dev/null 2>&1
+      exit 1
+    else
+      echo -e "\x1B[32mClean!\x1B[0m\n"
+    fi
+}
+
+# Php stlye check
+function checkstyle {
+    echo -e 'Running codesniffer...\c'
+    vendor/squizlabs/php_codesniffer/scripts/phpcs src --standard=PSR2 > /dev/null
+    check $?
+}
+
+# Run php mess detector
+function mess_detector {
+    echo -e 'Running mess detector...\c'
+    if [ -e phpmd.xml ]
+    then
+        vendor/phpmd/phpmd/src/bin/phpmd src text phpmd.xml  > /dev/null
+    else
+        vendor/phpmd/phpmd/src/bin/phpmd src text cleancode,naming,controversial,design --suffixes php,phtml 
+    fi
+    
+    check $?
+}
+
+# Run tests
+function test {
+    echo -e 'Running tests...\c'
+    vendor/phpunit/phpunit/phpunit > /dev/null
+    check $?
+}
+
+# Check weather the output contains any error 
+function check {
+    if [ $1 == 0 ]; then
+        pass
+    else
+        failed
+    fi
+}
+
+function pass {
+    echo -e "\x1B[32mPassed!\x1B[0m\n"
+}
+
+function failed {
+    echo -e "\x1B[31mFailed!\x1B[0m\n"
+    mplayer support/git/sad-trompone.mp3  > /dev/null &
+    exit 1
+}
+
+header
+git_checker
+lint
+checkstyle
+mess_detector
+test
+exit 0

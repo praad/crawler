@@ -1,0 +1,49 @@
+{
+    "name": "Web Crawler",
+    "type": "project",
+    "description": "Simple web crawler based on Uwe Hunfeld's PHPCrawl.",
+    "keywords": ["crawler", "web crawler","Uwe Hunfeld's PHPCrawl", "Symfony 4", "Console"],
+    "homepage": "https://adamprancz.com",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Adam Prancz",
+            "email": "adam.prancz@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/dotenv": "^4.1",
+        "symfony/console": "^4.1",
+        "katzgrau/klogger": "dev-master",
+        "mmerian/phpcrawl": "dev-master",
+        "twig/twig": "^2.0",
+        "alc/sitemap-crawler": "^1.0@dev"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^4.1",
+        "squizlabs/php_codesniffer": "^2.3",
+        "phpmd/phpmd": "@stable",
+        "phpunit/phpunit": "^7.4@dev"
+    },
+    "suggest": {
+        "katzgrau/klogger": "dev-master"
+    },
+    "autoload": 
+    {
+        "psr-4": 
+           {
+               "Console\\" : "src/",
+               "Traits\\" : "src/Traits",
+               "Crawler\\" : "src/Crawler",
+               "Console\\Command\\" : "src/Command"
+           }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": "test/"
+        }
+    },
+    "scripts": {
+        "post-install-cmd" : "cp support/git/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push && chmod +x install.sh"
+    }
+}
